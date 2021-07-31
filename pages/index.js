@@ -4,6 +4,52 @@ import styles from '../styles/Home.module.css'
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
+const Nav = () => {
+  return (
+    <nav
+
+    >
+      <ul
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "1rem auto",
+          listStyleType: "none",
+          gap: "2rem"
+        }}
+      >
+        <li className={styles.navButton}>
+            <a 
+              style={{
+                fontSize: "22px",
+                color: "#777",
+                textDecoration: "none",
+                transition: "all 0.45s",
+              }}
+              href="/"
+            >
+              Valuations
+            </a>
+          </li>
+          <li className={styles.navButton}>
+            <a 
+              style={{
+                fontSize: "22px",
+                color: "#777",
+                textDecoration: "none",
+                transition: "all 0.45s",
+              }}
+              href="/my-valuations"
+            >
+              My Valuations
+            </a>
+          </li>
+      </ul>
+    </nav>
+  )
+}
+
 export default function Home() {
   const [ticker, setTicker] = useState(null);
   const [growthRate, setGrowthRate] = useState(null);
@@ -29,8 +75,11 @@ export default function Home() {
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      
+      <Nav />
 
       <main className={styles.main}>
+
         <h1 className={styles.title}>
           Welcome to <span style={{ color: "#0070f3" }}>Valuations!</span>
         </h1>
@@ -41,7 +90,7 @@ export default function Home() {
             flexDirection: "column", 
             textAlign: "center", 
             gap: "1rem",
-            marginTop: "1rem",
+            marginTop: "2rem",
           }}
         >
           <label htmlFor="ticker">Ticker</label>
