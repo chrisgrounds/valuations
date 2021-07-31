@@ -22,7 +22,7 @@ export default ({ htmlFor, label, type, onChange, placeholder, required }) => {
         }}
         placeholder={placeholder}
         required={required}
-        step={0.01}
+        step={0.1}
       />
     </div>
   )
