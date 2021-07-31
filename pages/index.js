@@ -107,7 +107,7 @@ export default function Home() {
 
       <footer className={styles.footer}>
         <a
-          href="https://valuations.vercel.app/"
+          href="https://github.com/chrisgrounds/"
           target="_blank"
           rel="noopener noreferrer"
         >
