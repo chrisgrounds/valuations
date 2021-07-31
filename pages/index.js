@@ -20,28 +20,12 @@ const Nav = () => {
         }}
       >
         <li className={styles.navButton}>
-            <a 
-              style={{
-                fontSize: "22px",
-                color: "#777",
-                textDecoration: "none",
-                transition: "all 0.45s",
-              }}
-              href="/"
-            >
+          <a className={styles.navButtonAnchor} href="/">
               Valuations
             </a>
           </li>
           <li className={styles.navButton}>
-            <a 
-              style={{
-                fontSize: "22px",
-                color: "#777",
-                textDecoration: "none",
-                transition: "all 0.45s",
-              }}
-              href="/my-valuations"
-            >
+            <a className={styles.navButtonAnchor} href="/my-valuations">
               My Valuations
             </a>
           </li>
