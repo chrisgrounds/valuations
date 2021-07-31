@@ -1,7 +1,28 @@
+import { useEffect, useState } from "react";
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
+const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
+
 export default function Home() {
+  const [ticker, setTicker] = useState(null);
+  const [growthRate, setGrowthRate] = useState(null);
+  const [valuation, setValuation] = useState(null);
+  const [loading, setLoading] = useState(null);
+
+  const handleValuationRequest = (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    fetch(`https://bqv9rgyo5b.execute-api.eu-west-1.amazonaws.com/Prod/?ticker=${ticker}&growth_rate=${growthRate}`)
+      .then(data => data.json())
+      .then(data => setValuation(data))
+      .then(_ => setLoading(false))
+  }
+
+  console.log(valuation)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,53 +32,86 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <span style={{ color: "#0070f3" }}>Valuations!</span>
         </h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
+        <form 
+          style={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            textAlign: "center", 
+            gap: "1rem",
+            marginTop: "1rem",
+          }}
+        >
+          <label htmlFor="ticker">Ticker</label>
+          <input 
+            type="text" 
+            name="ticker" 
+            onChange={event => setTicker(event.target.value)}
+            style={{
+              border: "1px solid #eaeaea",
+              borderRadius: "10px",
+              textAlign: "center",
+            }}
+            placeholder="tsla"
+          />
+            
+          <label htmlFor="growth">Growth Rate</label>
+          <input 
+            type="number" 
+            step="0.01" 
+            disabled
+            onChange={event => setGrowthRate(event.target.value)} 
+            style={{
+              border: "1px solid #eaeaea",
+              borderRadius: "10px",
+              textAlign: "center",
+            }}
+            placeholder="1.5"
+          />
+          
+          <button 
+            className={styles.button}
+            onClick={handleValuationRequest}
           >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+            &rarr; { loading && "Loading..." }
+          </button>
+        </form>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        { valuation && (
+          <div className={styles.grid}>
+            <div className={styles.card}>
+              <h3>DCF Value</h3>
+              <p>${ round2(valuation.dcf_value) }</p>
+            </div>
+
+            <div className={styles.card}>
+              <h3>PE Multiple</h3>
+              <p>{ round2(valuation.pe_multiple) }</p>
+            </div>
+
+            <div className={styles.card}>
+              <h3>Final EPS</h3>
+              <p>${ round2(valuation.eps[valuation.eps.length - 1]) }</p>
+            </div>
+
+            <div className={styles.card}>
+              <h3>Final Net Income</h3>
+              <p>${ round2(valuation.net_income[valuation.net_income.length - 1]) } million</p>
+            </div>
+
+          </div>
+        )}
       </main>
 
       <footer className={styles.footer}>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://valuations.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+          Valuations by Christopher Grounds
         </a>
       </footer>
     </div>
