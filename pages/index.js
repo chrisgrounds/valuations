@@ -1,69 +1,61 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Nav from "../components/Nav";
+import FormItem from "../components/FormItem";
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
-
-const Nav = () => {
-  return (
-    <nav
-
-    >
-      <ul
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "1rem auto",
-          listStyleType: "none",
-          gap: "2rem"
-        }}
-      >
-        <li className={styles.navButton}>
-          <a className={styles.navButtonAnchor} href="/">
-              Valuations
-            </a>
-          </li>
-          <li className={styles.navButton}>
-            <a className={styles.navButtonAnchor} href="/my-valuations">
-              My Valuations
-            </a>
-          </li>
-      </ul>
-    </nav>
-  )
-}
 
 export default function Home() {
   const [ticker, setTicker] = useState(null);
   const [growthRate, setGrowthRate] = useState(null);
+  const [operatingMargin, setOperatingMargin] = useState(null);
+  const [discountRate, setDiscountRate] = useState(null);
   const [valuation, setValuation] = useState(null);
   const [loading, setLoading] = useState(null);
+  const [showRequired, setShowRequired] = useState(false);
+
+  const buildUrl = (params) => {
+    const baseUrl = 'https://bqv9rgyo5b.execute-api.eu-west-1.amazonaws.com/Prod/';
+    let paramsUrl = '?';
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value) {
+        paramsUrl += `${key}=${value}&`;
+      }
+    }
+
+    return baseUrl + paramsUrl
+  }
 
   const handleValuationRequest = (e) => {
     e.preventDefault();
 
     setLoading(true);
 
-    fetch(`https://bqv9rgyo5b.execute-api.eu-west-1.amazonaws.com/Prod/?ticker=${ticker}&growth_rate=${growthRate}`)
+    if(!ticker) {
+      setShowRequired(true);
+    } else {
+      setShowRequired(false);
+    }
+
+    fetch(buildUrl({ ticker: ticker, growth_rate: growthRate, operating_margin: operatingMargin, discount_rate: discountRate }))
       .then(data => data.json())
       .then(data => setValuation(data))
       .then(_ => setLoading(false))
+      .catch(_ => setLoading(false))
   }
-
-  console.log(valuation)
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Valuations</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
       <Nav />
 
       <main className={styles.main}>
-
         <h1 className={styles.title}>
           Welcome to <span style={{ color: "#0070f3" }}>Valuations!</span>
         </h1>
@@ -73,37 +65,43 @@ export default function Home() {
             display: "flex", 
             flexDirection: "column", 
             textAlign: "center", 
-            gap: "1rem",
+            gap: "0.5rem",
             marginTop: "2rem",
           }}
         >
-          <label htmlFor="ticker">Ticker</label>
-          <input 
+          <FormItem 
+            htmlFor="ticker" 
+            label="Ticker*" 
             type="text" 
-            name="ticker" 
-            onChange={event => setTicker(event.target.value)}
-            style={{
-              border: "1px solid #eaeaea",
-              borderRadius: "10px",
-              textAlign: "center",
-            }}
+            onChange={event => setTicker(event.target.value)} 
             placeholder="tsla"
+            required
           />
-            
-          <label htmlFor="growth">Growth Rate</label>
-          <input 
+
+          <FormItem 
+            htmlFor="growth" 
+            label="Growth Rate"
             type="number" 
-            step="0.01" 
-            disabled
             onChange={event => setGrowthRate(event.target.value)} 
-            style={{
-              border: "1px solid #eaeaea",
-              borderRadius: "10px",
-              textAlign: "center",
-            }}
             placeholder="1.5"
           />
-          
+
+          <FormItem 
+            htmlFor="operating_margin" 
+            label="Operating Margin" 
+            type="number" 
+            onChange={event => setOperatingMargin(event.target.value)} 
+            placeholder="0.1"
+          />
+
+          <FormItem 
+            htmlFor="discount_rate" 
+            label="Discount Rate" 
+            type="number" 
+            onChange={event => setDiscountRate(event.target.value)} 
+            placeholder="0.15"
+          />
+            
           <button 
             className={styles.button}
             onClick={handleValuationRequest}
@@ -111,6 +109,18 @@ export default function Home() {
             &rarr; { loading && "Loading..." }
           </button>
         </form>
+
+        {showRequired && (
+          <div>
+            <p 
+              style={{
+                color: "red"
+              }}
+            >
+              Ticker is required
+            </p>
+          </div>
+        )}
 
         { valuation && (
           <div className={styles.grid}>
