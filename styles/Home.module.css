@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
 }
 
 .main {
@@ -89,7 +88,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
   max-width: 800px;
   margin-top: 3rem;
 }
@@ -104,6 +102,8 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
+  background: none;
+  cursor: pointer;
 }
 
 .card:hover,
@@ -148,13 +148,6 @@
   margin-top: 1rem;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
-}
-
 .navButton {
   height: 50px;
   transition: background-position-x 0.9s linear;
@@ -184,5 +177,21 @@
 @keyframes line {
   0% {
     background-position-x: 390px;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    margin: 0.25rem;
+  }
+  .grid {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .navButtonAnchor {
+    font-size: 16px;
+  }
+  .container {
+    padding: 0 3rem;
   }
 }

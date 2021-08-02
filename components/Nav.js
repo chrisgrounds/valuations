@@ -19,7 +19,8 @@ const Nav = () => {
           alignItems: "center",
           margin: "1rem auto",
           listStyleType: "none",
-          gap: "2rem"
+          gap: "2rem",
+          padding: "0",
         }}
       >
         <NavItem href="/" text="Valuations" />
