@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Nav from "../components/Nav";
 import FormItem from "../components/FormItem";
+import Head from "../components/Head";
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
@@ -48,10 +48,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Valuations</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Head title="Valuations" />
       
       <Nav />
 
