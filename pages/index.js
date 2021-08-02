@@ -6,6 +6,13 @@ import Head from "../components/Head";
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
+const Card = ({ title, content }) => (
+  <button className={styles.card}>
+    <h3>{title}</h3>
+    <p>{content}</p>
+  </button>
+);
+
 export default function Home() {
   const [ticker, setTicker] = useState(null);
   const [growthRate, setGrowthRate] = useState(null);
@@ -105,7 +112,7 @@ export default function Home() {
             label="Perpetual Rate" 
             type="number" 
             onChange={event => setPerpetualRate(event.target.value)} 
-            placeholder="0.03"
+            placeholder="1.03"
           />
             
           <button 
@@ -130,26 +137,10 @@ export default function Home() {
 
         { valuation && (
           <div className={styles.grid}>
-            <div className={styles.card}>
-              <h3>DCF Value</h3>
-              <p>${ round2(valuation.dcf_value) }</p>
-            </div>
-
-            <div className={styles.card}>
-              <h3>PE Multiple</h3>
-              <p>{ round2(valuation.pe_multiple) }</p>
-            </div>
-
-            <div className={styles.card}>
-              <h3>Final EPS</h3>
-              <p>${ round2(valuation.eps[valuation.eps.length - 1]) }</p>
-            </div>
-
-            <div className={styles.card}>
-              <h3>Final Net Income</h3>
-              <p>${ round2(valuation.net_income[valuation.net_income.length - 1]) } million</p>
-            </div>
-
+            <Card title="DCF Value" content={`\$${round2(valuation.dcf_value)}`} />
+            <Card title="PE Multiple" content={round2(valuation.pe_multiple)} />
+            <Card title="Final EPS" content={`\$${round2(valuation.eps[valuation.eps.length - 1])}`} />
+            <Card title="Final Net Income" content={`\$${round2(valuation.net_income[valuation.net_income.length - 1])}`} />
           </div>
         )}
       </main>
