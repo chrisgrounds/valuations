@@ -94,7 +94,7 @@
 
 .card {
   margin: 1rem;
-  flex-basis: 45%;
+  flex: 1 1 0px;
   padding: 1.5rem;
   text-align: left;
   color: inherit;
@@ -116,6 +116,7 @@
 .card h3 {
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
+  height: 70px;
 }
 
 .card p {
@@ -179,6 +180,42 @@
     background-position-x: 390px;
   }
 }
+
+.modalContainer {
+  font-size: 14px;
+}
+.modalContainer > .modalHeader {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+.modalContainer > .modalContent {
+  width: 100%;
+  padding: 10px 5px;
+}
+.modalContainer > .modalActions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+.modalContainer > .modalClose {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+
+
 
 @media (max-width: 600px) {
   .card {

@@ -4,14 +4,31 @@ import Nav from "../components/Nav";
 import FormItem from "../components/FormItem";
 import Head from "../components/Head";
 import Footer from "../components/Footer";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
-const Card = ({ title, content }) => (
-  <button className={styles.card}>
-    <h3>{title}</h3>
-    <p>{content}</p>
-  </button>
+const Card = ({ title, content, popupContent }) => (
+  <Popup 
+    trigger={
+      <button className={styles.card}>
+        <h3>{title}</h3>
+        <p>{content}</p>
+      </button>
+    } 
+    position="right center"
+  >
+    {close => (
+      <div className={styles.modalContainer}>
+        <button className={styles.modalClose} onClick={close}>
+          &times;
+        </button>
+        <div className={styles.modalHeader}>{title}</div>
+        <div className={styles.modalContent}>{popupContent}</div>
+      </div>
+    )}
+  </Popup>
 );
 
 export default function Home() {
@@ -138,10 +155,26 @@ export default function Home() {
 
         { valuation && (
           <div className={styles.grid}>
-            <Card title="DCF Value" content={`\$${round2(valuation.dcf_value)}`} />
-            <Card title="PE Multiple" content={round2(valuation.pe_multiple)} />
-            <Card title="Final EPS" content={`\$${round2(valuation.eps[valuation.eps.length - 1])}`} />
-            <Card title="Final Net Income" content={`\$${round2(valuation.net_income[valuation.net_income.length - 1])}`} />
+            <Card 
+              title="DCF Value" 
+              content={`\$${round2(valuation.dcf_value)}`}
+              popupContent="This is the discounted cash flow value, which is the value of the company based on the given parameters. This value is calculated by taking the companies future cash flows and discounting them back to today, using the given discount rate. The discount rate can be thought of as the return on investment you want. If the current stock price is lower than the DCF value, then you would expect a return on investment greater than your discount rate."
+            />
+            <Card 
+              title="PE Multiple" 
+              content={round2(valuation.pe_multiple)}
+              popupContent="The price to earnings multiple that is derived through averaging the results of the perpetual growth PE and the earnings growth PE. The perpetual growth PE is derived from the perpetual rate and the discount rate, and the earnings growth PE is derived from average earnings growth and a default PEG ratio."
+            />
+            <Card 
+              title="Final EPS" 
+              content={`\$${round2(valuation.eps[valuation.eps.length - 1])}`}
+              popupContent="The earnings per share of the last year this DCF valuation is calculated on. Earnings per share are calculated by taking the company net income and dividing by the number of shares."
+            />
+            <Card 
+              title="Final Net Income" 
+              content={`\$${displayNumber(valuation.net_income[valuation.net_income.length - 1])}`}
+              popupContent="The net income of the last year this DCF valuation is calculated on. Net income is the bottom line of the income statement, and is the value left over to shareholders."
+            />
           </div>
         )}
       </main>
@@ -149,4 +182,19 @@ export default function Home() {
       <Footer />
     </div>
   )
+}
+
+const displayNumber = (num) => {
+  console.log(num);
+  const numAsString = new Number(num).toString();
+  console.log(numAsString);
+
+  const nonFractional = numAsString.split(".")[0];
+  console.log(nonFractional);
+
+  if (nonFractional.length > 7) {
+    return `${round2(num / 1000000000)}bn`;
+  }
+
+  return `${round2(num / 1000000)}M`;
 }
