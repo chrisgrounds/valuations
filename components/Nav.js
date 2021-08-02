@@ -2,14 +2,14 @@ import React from 'react';
 import styles from '../styles/Home.module.css'
 
 const NavItem = ({ href, text }) => (
-  <li className={styles.navButton}>
-    <a className={styles.navButtonAnchor} href={href}>
-      {text}
-    </a>
-  </li>
+  <a className={styles.navButtonAnchor} href={href}>
+    <li className={styles.navButton}>
+        {text}
+    </li>
+  </a>
 );
 
-export default () => {
+const Nav = () => {
   return (
     <nav>
       <ul
@@ -29,3 +29,5 @@ export default () => {
     </nav>
   )
 }
+
+export default Nav;

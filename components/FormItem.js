@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ htmlFor, label, type, onChange, placeholder, required }) => {
+const FormItem = ({ htmlFor, label, type, onChange, placeholder, required }) => {
   return (
     <div
       style={{
@@ -27,3 +27,5 @@ export default ({ htmlFor, label, type, onChange, placeholder, required }) => {
     </div>
   )
 }
+
+export default FormItem;
