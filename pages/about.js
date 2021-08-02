@@ -1,6 +1,7 @@
 import styles from '../styles/Home.module.css'
 import Nav from "../components/Nav";
 import Head from "../components/Head";
+import Footer from "../components/Footer";
 
 export default function MyValuation() {
   return (
@@ -20,6 +21,8 @@ export default function MyValuation() {
           <p>Valuations provides defaults if you only wish to provide a ticker.</p>
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }

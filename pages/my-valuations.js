@@ -1,6 +1,7 @@
 import styles from '../styles/Home.module.css'
 import Nav from "../components/Nav";
 import Head from "../components/Head";
+import Footer from "../components/Footer";
 
 export default function MyValuation() {
   return (
@@ -12,6 +13,8 @@ export default function MyValuation() {
       <main className={styles.main}>
         <h1 className={styles.title}>Coming soon!</h1>
       </main>
+
+      <Footer />
     </div>
   )
 }

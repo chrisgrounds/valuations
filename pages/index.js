@@ -3,6 +3,7 @@ import styles from '../styles/Home.module.css'
 import Nav from "../components/Nav";
 import FormItem from "../components/FormItem";
 import Head from "../components/Head";
+import Footer from "../components/Footer";
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
 
@@ -145,15 +146,7 @@ export default function Home() {
         )}
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://github.com/chrisgrounds/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Valuations by Christopher Grounds
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }
