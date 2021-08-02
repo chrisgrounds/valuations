@@ -11,6 +11,7 @@ export default function Home() {
   const [growthRate, setGrowthRate] = useState(null);
   const [operatingMargin, setOperatingMargin] = useState(null);
   const [discountRate, setDiscountRate] = useState(null);
+  const [perpetualRate, setPerpetualRate] = useState(null);
   const [valuation, setValuation] = useState(null);
   const [loading, setLoading] = useState(null);
   const [showRequired, setShowRequired] = useState(false);
@@ -39,7 +40,7 @@ export default function Home() {
       setShowRequired(false);
     }
 
-    fetch(buildUrl({ ticker: ticker, growth_rate: growthRate, operating_margin: operatingMargin, discount_rate: discountRate }))
+    fetch(buildUrl({ ticker: ticker, growth_rate: growthRate, operating_margin: operatingMargin, discount_rate: discountRate, perpetual_rate: perpetualRate }))
       .then(data => data.json())
       .then(data => setValuation(data))
       .then(_ => setLoading(false))
@@ -97,6 +98,14 @@ export default function Home() {
             type="number" 
             onChange={event => setDiscountRate(event.target.value)} 
             placeholder="0.15"
+          />
+
+          <FormItem 
+            htmlFor="perpetual_rate" 
+            label="Perpetual Rate" 
+            type="number" 
+            onChange={event => setPerpetualRate(event.target.value)} 
+            placeholder="0.03"
           />
             
           <button 
