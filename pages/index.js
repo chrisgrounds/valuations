@@ -4,32 +4,9 @@ import Nav from "../components/Nav";
 import FormItem from "../components/FormItem";
 import Head from "../components/Head";
 import Footer from "../components/Footer";
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+import Card from "../components/Card";
 
 const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
-
-const Card = ({ title, content, popupContent }) => (
-  <Popup 
-    trigger={
-      <button className={styles.card}>
-        <h3>{title}</h3>
-        <p>{content}</p>
-      </button>
-    } 
-    position="right center"
-  >
-    {close => (
-      <div className={styles.modalContainer}>
-        <button className={styles.modalClose} onClick={close}>
-          &times;
-        </button>
-        <div className={styles.modalHeader}>{title}</div>
-        <div className={styles.modalContent}>{popupContent}</div>
-      </div>
-    )}
-  </Popup>
-);
 
 export default function Home() {
   const [ticker, setTicker] = useState(null);
@@ -207,7 +184,7 @@ const Information = ({ valuation, discountRate }) => {
     <div style={{ marginBottom: "1rem", maxWidth: "800px" }}>
       <p>
         Based on this DCF valuation of <EmphasiseText text={`\$${dcfValue}`} /> and current stock price of <EmphasiseText text={`\$${currentPrice}`} />, you could <EmphasiseText text={buyOrSell} /> this equity and expect a <EmphasiseText text={returnExpectation} /> followed by returns in line with your discount rate of <EmphasiseText text={`${discountRate * 100 || 15}%`} />.
-      </p>
+      </p>x
     </div>
   );
 }
