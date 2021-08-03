@@ -21,6 +21,7 @@ const Nav = () => {
           listStyleType: "none",
           gap: "2rem",
           padding: "0",
+          margin: "1rem 0 0 0",
         }}
       >
         <NavItem href="/" text="Valuations" />
