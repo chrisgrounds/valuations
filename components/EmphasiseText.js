@@ -1,5 +1,5 @@
-const EmphasiseText = ({ text }) => (
-  <span style={{ color: "#0070f3", fontWeight: "bold" }}>
+const EmphasiseText = ({ text, color }) => (
+  <span style={{ color: `${color || "#0070f3"}`, fontWeight: "bold" }}>
     {text}
   </span>
 )
