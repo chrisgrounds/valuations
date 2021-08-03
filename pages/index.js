@@ -154,27 +154,36 @@ export default function Home() {
         )}
 
         { valuation && (
-          <div className={styles.grid}>
-            <Card 
-              title="DCF Value" 
-              content={`\$${round2(valuation.dcf_value)}`}
-              popupContent="This is the discounted cash flow value, which is the value of the company based on the given parameters. This value is calculated by taking the companies future cash flows and discounting them back to today, using the given discount rate. The discount rate can be thought of as the return on investment you want. If the current stock price is lower than the DCF value, then you would expect a return on investment greater than your discount rate."
-            />
-            <Card 
-              title="PE Multiple" 
-              content={round2(valuation.pe_multiple)}
-              popupContent="The price to earnings multiple that is derived through averaging the results of the perpetual growth PE and the earnings growth PE. The perpetual growth PE is derived from the perpetual rate and the discount rate, and the earnings growth PE is derived from average earnings growth and a default PEG ratio."
-            />
-            <Card 
-              title="Final EPS" 
-              content={`\$${round2(valuation.eps[valuation.eps.length - 1])}`}
-              popupContent="The earnings per share of the last year this DCF valuation is calculated on. Earnings per share are calculated by taking the company net income and dividing by the number of shares."
-            />
-            <Card 
-              title="Final Net Income" 
-              content={`\$${displayNumber(valuation.net_income[valuation.net_income.length - 1])}`}
-              popupContent="The net income of the last year this DCF valuation is calculated on. Net income is the bottom line of the income statement, and is the value left over to shareholders."
-            />
+          <div style={{     
+              "flexDirection": "column",
+              "display": "flex",
+              "justifyContent": "center",
+              "alignItems": "center", 
+            }}>
+            <div className={styles.grid}>
+              <Card 
+                title="DCF Value" 
+                content={`\$${round2(valuation.dcf_value)}`}
+                popupContent="This is the discounted cash flow value, which is the value of the company based on the given parameters. This value is calculated by taking the companies future cash flows and discounting them back to today, using the given discount rate. The discount rate can be thought of as the return on investment you want. If the current stock price is lower than the DCF value, then you would expect a return on investment greater than your discount rate."
+              />
+              <Card 
+                title="PE Multiple" 
+                content={round2(valuation.pe_multiple)}
+                popupContent="The price to earnings multiple that is derived through averaging the results of the perpetual growth PE and the earnings growth PE. The perpetual growth PE is derived from the perpetual rate and the discount rate, and the earnings growth PE is derived from average earnings growth and a default PEG ratio."
+              />
+              <Card 
+                title="Final EPS" 
+                content={`\$${round2(valuation.eps[valuation.eps.length - 1])}`}
+                popupContent="The earnings per share of the last year this DCF valuation is calculated on. Earnings per share are calculated by taking the company net income and dividing by the number of shares."
+              />
+              <Card 
+                title="Final Net Income" 
+                content={`\$${displayNumber(valuation.net_income[valuation.net_income.length - 1])}`}
+                popupContent="The net income of the last year this DCF valuation is calculated on. Net income is the bottom line of the income statement, and is the value left over to shareholders."
+              />
+            </div>
+
+            <Information valuation={valuation} discountRate={discountRate} />
           </div>
         )}
       </main>
@@ -184,13 +193,35 @@ export default function Home() {
   )
 }
 
+const Information = ({ valuation, discountRate }) => {
+  const dcfValue = round2(valuation.dcf_value);
+  const currentPrice = valuation.current_price;
+  const buyOrSell = dcfValue - currentPrice > 0 ? "BUY" : "SELL";
+  const percentChange = round2(((dcfValue - currentPrice) / currentPrice) * 100);
+  const returnExpectation 
+    = dcfValue - currentPrice > 0 
+      ? `${percentChange}% upside` 
+      : `${percentChange}% downside`;
+
+  return (
+    <div style={{ marginBottom: "1rem", maxWidth: "800px" }}>
+      <p>
+        Based on this DCF valuation of <EmphasiseText text={`\$${dcfValue}`} /> and current stock price of <EmphasiseText text={`\$${currentPrice}`} />, you could <EmphasiseText text={buyOrSell} /> this equity and expect a <EmphasiseText text={returnExpectation} /> followed by returns in line with your discount rate of <EmphasiseText text={`${discountRate * 100 || 15}%`} />.
+      </p>
+    </div>
+  );
+}
+
+const EmphasiseText = ({ text }) => (
+  <span style={{ color: "#0070f3", fontWeight: "bold" }}>
+    {text}
+  </span>
+)
+
 const displayNumber = (num) => {
-  console.log(num);
   const numAsString = new Number(num).toString();
-  console.log(numAsString);
 
   const nonFractional = numAsString.split(".")[0];
-  console.log(nonFractional);
 
   if (nonFractional.length > 7) {
     return `${round2(num / 1000000000)}bn`;
