@@ -5,8 +5,9 @@ import FormItem from "../components/FormItem";
 import Head from "../components/Head";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
-
-const round2 = (num) => Math.round((num + Number.EPSILON) * 100) / 100
+import Information from "../components/Information";
+import EmphasiseText from "../components/EmphasiseText";
+import round2 from "../components/round2";
 
 export default function Home() {
   const [ticker, setTicker] = useState(null);
@@ -57,7 +58,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <span style={{ color: "#0070f3" }}>Valuations!</span>
+          Welcome to <EmphasiseText text="Valuations!" />
         </h1>
 
         <form 
@@ -169,31 +170,6 @@ export default function Home() {
     </div>
   )
 }
-
-const Information = ({ valuation, discountRate }) => {
-  const dcfValue = round2(valuation.dcf_value);
-  const currentPrice = valuation.current_price;
-  const buyOrSell = dcfValue - currentPrice > 0 ? "BUY" : "SELL";
-  const percentChange = round2(((dcfValue - currentPrice) / currentPrice) * 100);
-  const returnExpectation 
-    = dcfValue - currentPrice > 0 
-      ? `${percentChange}% upside` 
-      : `${percentChange}% downside`;
-
-  return (
-    <div style={{ marginBottom: "1rem", maxWidth: "800px" }}>
-      <p>
-        Based on this DCF valuation of <EmphasiseText text={`\$${dcfValue}`} /> and current stock price of <EmphasiseText text={`\$${currentPrice}`} />, you could <EmphasiseText text={buyOrSell} /> this equity and expect a <EmphasiseText text={returnExpectation} /> followed by returns in line with your discount rate of <EmphasiseText text={`${discountRate * 100 || 15}%`} />.
-      </p>x
-    </div>
-  );
-}
-
-const EmphasiseText = ({ text }) => (
-  <span style={{ color: "#0070f3", fontWeight: "bold" }}>
-    {text}
-  </span>
-)
 
 const displayNumber = (num) => {
   const numAsString = new Number(num).toString();
