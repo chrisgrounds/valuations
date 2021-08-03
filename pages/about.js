@@ -2,6 +2,7 @@ import styles from '../styles/Home.module.css'
 import Nav from "../components/Nav";
 import Head from "../components/Head";
 import Footer from "../components/Footer";
+import EmphasiseText from '../components/EmphasiseText';
 
 export default function MyValuation() {
   return (
@@ -14,7 +15,7 @@ export default function MyValuation() {
         <h1 className={styles.title}>About</h1>
 
         <div>
-          <p>Valuations provides a way to automate the creation of discounted cash flow valuations for equities.</p>
+          <p><EmphasiseText text="Valuations" /> provides a way to automate the creation of discounted cash flow valuations for equities.</p>
 
           <p>All you need to provide is the ticker, along optionally with an expected average growth rate, operating margin, discount rate, and perpetual yield.</p>
 
